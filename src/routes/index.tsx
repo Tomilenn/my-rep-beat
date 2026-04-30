@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { useLiveQuery } from "dexie-react-hooks";
 import { useMemo, useState } from "react";
 import { Play, Square, Dumbbell } from "lucide-react";
-import { db, type Routine } from "@/lib/db";
+import { db, type Routine, type Exercise, type SetLog } from "@/lib/db";
 import { useWorkout } from "@/context/WorkoutContext";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import { EndSessionDialog } from "@/components/EndSessionDialog";
@@ -33,21 +33,23 @@ function Index() {
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   const routines = useLiveQuery(() => db.routines.toArray(), []) ?? [];
-  const exercises = useLiveQuery(
-    () =>
-      routineId == null
-        ? Promise.resolve([])
-        : db.exercises.where("routineId").equals(routineId).sortBy("order"),
-    [routineId],
-  ) ?? [];
+  const exercises =
+    useLiveQuery<Exercise[]>(
+      () =>
+        routineId == null
+          ? Promise.resolve<Exercise[]>([])
+          : db.exercises.where("routineId").equals(routineId).sortBy("order"),
+      [routineId],
+    ) ?? [];
 
-  const setLogs = useLiveQuery(
-    () =>
-      sessionId == null
-        ? Promise.resolve([])
-        : db.setLogs.where("sessionId").equals(sessionId).toArray(),
-    [sessionId],
-  ) ?? [];
+  const setLogs =
+    useLiveQuery<SetLog[]>(
+      () =>
+        sessionId == null
+          ? Promise.resolve<SetLog[]>([])
+          : db.setLogs.where("sessionId").equals(sessionId).toArray(),
+      [sessionId],
+    ) ?? [];
 
   const completedByExercise = useMemo(() => {
     const m = new Map<number, number>();
