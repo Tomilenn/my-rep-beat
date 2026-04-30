@@ -36,7 +36,7 @@ export const Route = createRootRoute({
         content:
           "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no",
       },
-      { title: "CalistenIA — Entrena calistenia con técnica" },
+      { title: "Calistenia" },
       {
         name: "description",
         content:
@@ -46,7 +46,7 @@ export const Route = createRootRoute({
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { name: "apple-mobile-web-app-title", content: "CalistenIA" },
-      { property: "og:title", content: "CalistenIA — Entrena calistenia con técnica" },
+      { property: "og:title", content: "Calistenia" },
       {
         property: "og:description",
         content:
@@ -54,6 +54,12 @@ export const Route = createRootRoute({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Calistenia" },
+      { name: "description", content: "Apex Calisthenics is a PWA for high-performance calisthenics training and technical tracking." },
+      { property: "og:description", content: "Apex Calisthenics is a PWA for high-performance calisthenics training and technical tracking." },
+      { name: "twitter:description", content: "Apex Calisthenics is a PWA for high-performance calisthenics training and technical tracking." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3924e8f1-e2fd-41d2-a69c-69ef829c99d9/id-preview-84a74a07--df7dc987-7c4c-4e10-85ee-fbce8ecee364.lovable.app-1777577823950.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3924e8f1-e2fd-41d2-a69c-69ef829c99d9/id-preview-84a74a07--df7dc987-7c4c-4e10-85ee-fbce8ecee364.lovable.app-1777577823950.png" },
     ],
     links: [
       {
