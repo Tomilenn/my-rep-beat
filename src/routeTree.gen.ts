@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RutinasRouteImport } from './routes/rutinas'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RutinasIdRouteImport } from './routes/rutinas.$id'
 
 const RutinasRoute = RutinasRouteImport.update({
   id: '/rutinas',
@@ -22,31 +23,39 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RutinasIdRoute = RutinasIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => RutinasRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/rutinas': typeof RutinasRoute
+  '/rutinas': typeof RutinasRouteWithChildren
+  '/rutinas/$id': typeof RutinasIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/rutinas': typeof RutinasRoute
+  '/rutinas': typeof RutinasRouteWithChildren
+  '/rutinas/$id': typeof RutinasIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/rutinas': typeof RutinasRoute
+  '/rutinas': typeof RutinasRouteWithChildren
+  '/rutinas/$id': typeof RutinasIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/rutinas'
+  fullPaths: '/' | '/rutinas' | '/rutinas/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/rutinas'
-  id: '__root__' | '/' | '/rutinas'
+  to: '/' | '/rutinas' | '/rutinas/$id'
+  id: '__root__' | '/' | '/rutinas' | '/rutinas/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  RutinasRoute: typeof RutinasRoute
+  RutinasRoute: typeof RutinasRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -65,13 +74,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/rutinas/$id': {
+      id: '/rutinas/$id'
+      path: '/$id'
+      fullPath: '/rutinas/$id'
+      preLoaderRoute: typeof RutinasIdRouteImport
+      parentRoute: typeof RutinasRoute
+    }
   }
 }
 
+interface RutinasRouteChildren {
+  RutinasIdRoute: typeof RutinasIdRoute
+}
+
+const RutinasRouteChildren: RutinasRouteChildren = {
+  RutinasIdRoute: RutinasIdRoute,
+}
+
+const RutinasRouteWithChildren =
+  RutinasRoute._addFileChildren(RutinasRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  RutinasRoute: RutinasRoute,
+  RutinasRoute: RutinasRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
