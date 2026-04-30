@@ -104,13 +104,23 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
+  const isClient = typeof window !== "undefined";
+
   return (
-    <WorkoutProvider>
-      <div className="relative mx-auto flex min-h-screen w-full max-w-md flex-col bg-background pb-32">
-        <Outlet />
-        <RestTimer />
-        <BottomNav />
-      </div>
-    </WorkoutProvider>
+    <>
+      {isClient ? (
+        <WorkoutProvider>
+          <div className="relative mx-auto flex min-h-screen w-full max-w-md flex-col bg-background pb-32">
+            <Outlet />
+            <RestTimer />
+            <BottomNav />
+          </div>
+        </WorkoutProvider>
+      ) : (
+        <div className="relative mx-auto flex min-h-screen w-full max-w-md flex-col bg-background pb-32">
+          <Outlet />
+        </div>
+      )}
+    </>
   );
 }

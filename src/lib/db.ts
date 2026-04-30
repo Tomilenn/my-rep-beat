@@ -61,7 +61,7 @@ export class CalistenIADB extends Dexie {
   }
 }
 
-export const db = new CalistenIADB();
+export const db = typeof window !== "undefined" ? new CalistenIADB() : ({} as CalistenIADB);
 
 export async function ensureSeed() {
   const count = await db.routines.count();
