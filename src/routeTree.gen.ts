@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RutinasRouteImport } from './routes/rutinas'
+import { Route as HistorialRouteImport } from './routes/historial'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RutinasIdRouteImport } from './routes/rutinas.$id'
 
 const RutinasRoute = RutinasRouteImport.update({
   id: '/rutinas',
   path: '/rutinas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistorialRoute = HistorialRouteImport.update({
+  id: '/historial',
+  path: '/historial',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -31,30 +37,34 @@ const RutinasIdRoute = RutinasIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/historial': typeof HistorialRoute
   '/rutinas': typeof RutinasRouteWithChildren
   '/rutinas/$id': typeof RutinasIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/historial': typeof HistorialRoute
   '/rutinas': typeof RutinasRouteWithChildren
   '/rutinas/$id': typeof RutinasIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/historial': typeof HistorialRoute
   '/rutinas': typeof RutinasRouteWithChildren
   '/rutinas/$id': typeof RutinasIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/rutinas' | '/rutinas/$id'
+  fullPaths: '/' | '/historial' | '/rutinas' | '/rutinas/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/rutinas' | '/rutinas/$id'
-  id: '__root__' | '/' | '/rutinas' | '/rutinas/$id'
+  to: '/' | '/historial' | '/rutinas' | '/rutinas/$id'
+  id: '__root__' | '/' | '/historial' | '/rutinas' | '/rutinas/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  HistorialRoute: typeof HistorialRoute
   RutinasRoute: typeof RutinasRouteWithChildren
 }
 
@@ -65,6 +75,13 @@ declare module '@tanstack/react-router' {
       path: '/rutinas'
       fullPath: '/rutinas'
       preLoaderRoute: typeof RutinasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/historial': {
+      id: '/historial'
+      path: '/historial'
+      fullPath: '/historial'
+      preLoaderRoute: typeof HistorialRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -97,6 +114,7 @@ const RutinasRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  HistorialRoute: HistorialRoute,
   RutinasRoute: RutinasRouteWithChildren,
 }
 export const routeTree = rootRouteImport
